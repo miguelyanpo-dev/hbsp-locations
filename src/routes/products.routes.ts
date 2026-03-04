@@ -292,6 +292,50 @@ router.openapi(
   createKardex as any
 );
 
+router.openapi(
+  createRoute({
+    method: 'post',
+    path: '/products_buy',
+    request: {
+      query: RefQuerySchema,
+      body: {
+        content: {
+          'application/json': {
+            schema: CreateProductsSchema,
+          },
+        },
+      },
+    },
+    responses: {
+      201: {
+        content: {
+          'application/json': {
+            schema: SuccessResponse,
+          },
+        },
+        description: 'Created',
+      },
+      400: {
+        content: {
+          'application/json': {
+            schema: ErrorResponse,
+          },
+        },
+        description: 'Bad Request',
+      },
+      500: {
+        content: {
+          'application/json': {
+            schema: ErrorResponse,
+          },
+        },
+        description: 'Internal Server Error',
+      },
+    },
+  }),
+  createKardexBuy as any
+);
+
 
 router.openapi(
   createRoute({
@@ -456,48 +500,6 @@ router.openapi(
   deleteKardex as any
 );
 
-router.openapi(
-  createRoute({
-    method: 'post',
-    path: '/products_buy',
-    request: {
-      query: RefQuerySchema,
-      body: {
-        content: {
-          'application/json': {
-            schema: CreateProductsSchema,
-          },
-        },
-      },
-    },
-    responses: {
-      201: {
-        content: {
-          'application/json': {
-            schema: SuccessResponse,
-          },
-        },
-        description: 'Created',
-      },
-      400: {
-        content: {
-          'application/json': {
-            schema: ErrorResponse,
-          },
-        },
-        description: 'Bad Request',
-      },
-      500: {
-        content: {
-          'application/json': {
-            schema: ErrorResponse,
-          },
-        },
-        description: 'Internal Server Error',
-      },
-    },
-  }),
-  createKardexBuy as any
-);
+
 
 export default router;
