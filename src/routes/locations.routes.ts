@@ -6,8 +6,14 @@ import { getCitiesHandler } from '../controllers/cities/get_cities';
 
 const locationsRouter = new OpenAPIHono();
 
-locationsRouter.openapi(GetCountriesRoute, getCountriesHandler);
-locationsRouter.openapi(GetRegionsRoute, getRegionsHandler);
-locationsRouter.openapi(GetCitiesRoute, getCitiesHandler);
+// Register schemas for OpenAPI documentation
+locationsRouter.openAPIRegistry.registerPath(GetCountriesRoute);
+locationsRouter.openAPIRegistry.registerPath(GetRegionsRoute);
+locationsRouter.openAPIRegistry.registerPath(GetCitiesRoute);
+
+// Register actual route handlers
+locationsRouter.get('/countries', getCountriesHandler);
+locationsRouter.get('/regions', getRegionsHandler);
+locationsRouter.get('/cities', getCitiesHandler);
 
 export default locationsRouter;
