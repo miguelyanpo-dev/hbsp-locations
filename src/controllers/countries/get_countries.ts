@@ -1,9 +1,8 @@
-import type { RouteHandler } from '@hono/zod-openapi';
+import type { Context } from 'hono';
 import { resolveDb } from '../../utils/request.utils';
 import { getAllCountries } from '../../services/locations.service';
-import type { GetCountriesRoute } from '../../schemas/locations.schemas';
 
-export const getCountriesHandler: RouteHandler<typeof GetCountriesRoute> = async (c) => {
+export const getCountriesHandler = async (c: Context) => {
   const resolved = resolveDb(c);
   if (resolved.kind === 'error') return c.json(resolved.body, resolved.status);
   const { db } = resolved;

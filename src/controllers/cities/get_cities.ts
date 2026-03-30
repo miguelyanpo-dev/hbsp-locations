@@ -1,15 +1,17 @@
-import type { RouteHandler } from '@hono/zod-openapi';
+import type { Context } from 'hono';
 import { resolveDb } from '../../utils/request.utils';
 import { getCitiesByRegionIso } from '../../services/locations.service';
 import { NotFoundError } from '../../utils/errors';
-import type { GetCitiesRoute } from '../../schemas/locations.schemas';
 
-export const getCitiesHandler: RouteHandler<typeof GetCitiesRoute> = async (c) => {
+export const getCitiesHandler = async (c: Context) => {
   const resolved = resolveDb(c);
   if (resolved.kind === 'error') return c.json(resolved.body, resolved.status);
   const { db } = resolved;
 
-  const { iso_code } = c.req.valid('query');
+  const iso_code = c.req.query('iso_code')?.trim();
+  if (!iso_code) {
+    return c.json({ success: false, error: 'Bad Request', message: 'iso_code query parameter is required' }, 400);
+  }
 
   try {
     const cities = await getCitiesByRegionIso(db, iso_code);
